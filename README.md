@@ -3,7 +3,7 @@
 ## Firas Awadallah
 
 ![wwrc](wwrc.jpg)
-![wwrc](wwrc2.jpg)
+![wwrc12](lab12.jpg)
 
 step to build Server:
 
@@ -17,20 +17,10 @@ step to build Server:
 
 5. run the server using node index.js
 
-## application structure
+### lab12
 
-node moudules
+1. Create GET request 3rd party API 
+2. Create routes /trending and /search
+3. add 2 more routes /certification and /discover
+4. install axios and dotenv and nodemon
 
-.gitignore
-
-data.json
-
-index.js
-
-LICENSE
-
-package-lock.json
-
-package.json
-
-README.md
