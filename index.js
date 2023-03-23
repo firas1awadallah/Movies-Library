@@ -3,10 +3,18 @@ const express =  require('express');
 const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
+const bodyParser = require('body-parser')
+const { Client } = require('pg')
+let url = `postgres://firas:0000@localhost:5432/movies`;
+const client = new Client(url)
+
 const dataj  = require('./data.json');
 const app = express();
-app.use(cors());
 const PORT = process.env.PORT;
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+
 const apikey=process.env.API_KEY;
 // routes
 app.get('/favorite',favoritePageHandler);
@@ -15,6 +23,8 @@ app.get("/trending", trendingHandler);
 app.get('/search', searchHandler);
 app.get('/certification/movie/list', certificationHandler);
 app.get('/discover/movie', discoverHandler);
+app.post('/addMovie',addMovieHandler);
+app.get('/getMovies',getMoviesHandler);
 app.use("*", handleNtFoundError)
 
 
@@ -94,8 +104,37 @@ function discoverHandler(req,res){
        console.log(err)
   })
 
-  
 }  
+
+function addMovieHandler(req,res){
+  console.log(req.body);
+  
+   let {title,release_date,poster_path} = req.body; 
+   let sql = `INSERT INTO movies (title, release_date, poster_path)
+    VALUES ($1,$2,$3) RETURNING *;`
+   let values = [title, release_date, poster_path]
+   client.query(sql,values).then((result)=>{
+      
+ 
+       res.status(201).json(result.rows)
+
+   }
+
+   ).catch((err)=>{
+       errorHandler(err,req,res);
+   })
+
+}
+function getMoviesHandler(req,res) {
+  let sql =`SELECT * FROM movies;`; 
+  client.query(sql).then((result)=>{
+      
+      res.json(result.rows)
+  }).catch((err)=>{
+      errorHandler(err,req,res)
+  })
+}
+
 function info(title,poster_path,overview){
   this.title=title;
   this.poster_path=poster_path;
@@ -108,7 +147,9 @@ function trending (id,title,release_date,poster_path,overview){
   this.poster_path=poster_path;
   this.overview=overview;
 }
-
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
+client.connect().then(()=>{
+  app.listen(PORT,()=>{
+      console.log(`listening on port${PORT}`);
   })
+
+}).catch()
