@@ -26,6 +26,9 @@ app.get('/certification/movie/list', certificationHandler);
 app.get('/discover/movie', discoverHandler);
 app.post('/addMovie',addMovieHandler);
 app.get('/getMovies',getMoviesHandler);
+app.put('/UPDATE/:id',updateHandler)
+app.delete('/DELETE/:id', deleteHandle)
+app.get('/getMovie/:id',getMovieByidHandler);
 app.use("*", handleNtFoundError)
 
 
@@ -110,10 +113,10 @@ function discoverHandler(req,res){
 function addMovieHandler(req,res){
   console.log(req.body);
   
-   let {title,release_date,poster_path} = req.body; 
-   let sql = `INSERT INTO movies (title, release_date, poster_path)
-    VALUES ($1,$2,$3) RETURNING *;`
-   let values = [title, release_date, poster_path]
+   let {title,release_date,poster_path,comments,id} = req.body; 
+   let sql = `INSERT INTO movies (title, release_date, poster_path,comments,id)
+    VALUES ($1,$2,$3,$4,$5) RETURNING *;`
+   let values = [title, release_date, poster_path,comments,id]
    client.query(sql,values).then((result)=>{
       
  
@@ -135,7 +138,43 @@ function getMoviesHandler(req,res) {
       errorHandler(err,req,res)
   })
 }
+function updateHandler(req,res){
+  let moviesId = req.params.id 
+  let {title,release_date,poster_path,comments,id} = req.body;
+  let sql=`UPDATE movies SET title = $1, release_date = $2, poster_path=$3 ,comments=$4,id=$5
+  WHERE id = $6 RETURNING *;`;
+  let values = [title, release_date, poster_path,comments,id,moviesId];
+  client.query(sql,values).then(result=>{
+      console.log(result.rows);
+      res.send(result.rows)
+  }).catch()
 
+}
+function deleteHandle(req,res){
+  let {id} = req.params; 
+ 
+  let sql=`DELETE FROM movies WHERE id = $1;` ;
+  let value = [id];
+  client.query(sql,value).then(result=>{
+      res.status(204).send("deleted");
+  }).catch()
+
+
+}
+function getMovieByidHandler(req,res) {
+  let {id} = req.params;
+  console.log(id);
+  let sql =`SELECT * FROM movies 
+  WHERE id = $1 ;`
+  let value = [id];
+  client.query(sql,value).then((result)=>{
+      console.log(result);
+      res.json(result.rows)
+  }).catch((err)=>{
+      //errorHandler(err,req,res)
+      //console.log(err);
+  })
+}
 function info(title,poster_path,overview){
   this.title=title;
   this.poster_path=poster_path;

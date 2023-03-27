@@ -2,7 +2,7 @@
 
 ## Firas Awadallah
 
-![wwrc](wwrc.jpg)
+![wwrc](labwwrc.jpg)
 ![wwrc12](lab12.jpg)
 
 step to build Server:
@@ -30,3 +30,10 @@ step to build Server:
 
 2. create a post request to save a specific movie to database
 3. Create a get request to get all the data from the database
+
+### lab14
+![wwrc14](lab14.jpg)
+1. create a put request to update a specific movie to database
+2. Create a delete request to delete specific  data from  database
+3. Create a get request to get specific  data from  database
+4. add new columns "comment & id" in table
