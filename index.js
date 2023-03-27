@@ -4,13 +4,14 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 const bodyParser = require('body-parser')
+const PORT = process.env.PORT;
 const { Client } = require('pg')
 let url = `postgres://firas:0000@localhost:5432/movies`;
 const client = new Client(url)
 
 const dataj  = require('./data.json');
 const app = express();
-const PORT = process.env.PORT;
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
