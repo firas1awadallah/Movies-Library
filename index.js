@@ -110,10 +110,10 @@ function discoverHandler(req,res){
 function addMovieHandler(req,res){
   console.log(req.body);
   
-   let {title,release_date,poster_path} = req.body; 
-   let sql = `INSERT INTO movies (title, release_date, poster_path)
-    VALUES ($1,$2,$3) RETURNING *;`
-   let values = [title, release_date, poster_path]
+   let {title,release_date,poster_path,comments,id} = req.body; 
+   let sql = `INSERT INTO movies (title, release_date, poster_path,comments,id)
+    VALUES ($1,$2,$3,$4,$5) RETURNING *;`
+   let values = [title, release_date, poster_path,comments,id]
    client.query(sql,values).then((result)=>{
       
  
