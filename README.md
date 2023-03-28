@@ -2,8 +2,8 @@
 
 ## Firas Awadallah
 
-![wwrc](wwrc.jpg)
-![wwrc](wwrc2.jpg)
+![wwrc](labwwrc.jpg)
+![wwrc12](lab12.jpg)
 
 step to build Server:
 
@@ -17,20 +17,23 @@ step to build Server:
 
 5. run the server using node index.js
 
-## application structure
+### lab12
 
-node moudules
+1. Create GET request 3rd party API 
+2. Create routes /trending and /search
+3. add 2 more routes /certification and /discover
+4. install axios and dotenv and nodemon
 
-.gitignore
+### lab13
+![wwrc13](lab13.jpg)
+1. Create database "movies" and table "movies"  and install pg
 
-data.json
+2. create a post request to save a specific movie to database
+3. Create a get request to get all the data from the database
 
-index.js
-
-LICENSE
-
-package-lock.json
-
-package.json
-
-README.md
+### lab14
+![wwrc14](lab14.jpg)
+1. create a put request to update a specific movie to database
+2. Create a delete request to delete specific  data from  database
+3. Create a get request to get specific  data from  database
+4. add new columns "comment & id" in table
