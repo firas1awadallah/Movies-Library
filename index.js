@@ -6,7 +6,7 @@ require('dotenv').config();
 const bodyParser = require('body-parser')
 const PORT = process.env.PORT;
 const { Client } = require('pg')
-let url = `postgres://firas:0000@localhost:5432/movies`;
+let url = process.env.URL;
 const client = new Client(url)
 
 const dataj  = require('./data.json');
@@ -113,10 +113,10 @@ function discoverHandler(req,res){
 function addMovieHandler(req,res){
   console.log(req.body);
   
-   let {title,release_date,poster_path,comments,id} = req.body; 
-   let sql = `INSERT INTO movies (title, release_date, poster_path,comments,id)
-    VALUES ($1,$2,$3,$4,$5) RETURNING *;`
-   let values = [title, release_date, poster_path,comments,id]
+   let {title,release_date,poster_path,comments} = req.body; 
+   let sql = `INSERT INTO movies (title, release_date, poster_path,comments)
+    VALUES ($1,$2,$3,$4) RETURNING *;`
+   let values = [title, release_date, poster_path,comments]
    client.query(sql,values).then((result)=>{
       
  
@@ -140,10 +140,10 @@ function getMoviesHandler(req,res) {
 }
 function updateHandler(req,res){
   let moviesId = req.params.id 
-  let {title,release_date,poster_path,comments,id} = req.body;
-  let sql=`UPDATE movies SET title = $1, release_date = $2, poster_path=$3 ,comments=$4,id=$5
-  WHERE id = $6 RETURNING *;`;
-  let values = [title, release_date, poster_path,comments,id,moviesId];
+  let {title,release_date,poster_path,comments} = req.body;
+  let sql=`UPDATE movies SET title = $1, release_date = $2, poster_path=$3 ,comments=$4
+  WHERE id = $5 RETURNING *;`;
+  let values = [title, release_date, poster_path,comments,moviesId];
   client.query(sql,values).then(result=>{
       console.log(result.rows);
       res.send(result.rows)
